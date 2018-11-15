@@ -1,0 +1,560 @@
+Employee table
+---------------
+create table employee(id number(5),name varchar2(20),salary number(5,2), DOJ date);
+
+desc employee;
+
+insert into employee values(101,'Ramya',17000.00,'19-sep-2018');
+
+insert into employee values(102,'Nikitha',35000.00,'19-sep-2018');
+
+insert into employee values(&id,&name,&salary,&DOJ);
+
+insert into employee (id,name,salary) values(122,'Morishetty',850);
+
+alter table employee add designation varchar2(10);
+
+alter table employee modify designation varchar2(30);
+
+alter table employee drop column designation;
+
+truncate table employee;
+
+truncate table employee reuse storage;
+
+rename employee to employee_details;
+
+drop table employee_details;
+
+select *from employee;
+
+Emp table
+-----------
+create table emp(id number(10),name varchar2(30),salary number(10,5), DOJ date);
+
+insert into emp select *from employee;
+
+update emp set salary=salary+(salary*0.3) where id=101; 
+
+Product table
+-----------------
+create table product(id number(5),name varchar2(20),price number(5,2), mfg_date date);
+
+desc product;
+
+Subject table
+---------------------
+create table subjects(id number(5),maths number(5,2),science number(5,2),social number(5,2));
+
+insert into subjects values(11,78,89,91);
+
+insert into subjects values(12,88,96,69);
+
+insert into subjects values(13,79,68,79);
+
+insert into subjects values(14,99,86,77);
+
+alter table subjects add name varchar2(10);
+
+update subjects set name='Ramya' where id=11;
+
+alter table subjects add total number(5,2);
+
+update subjects set total=maths+science+social;
+
+alter table subjects add average number(5,3);
+
+update subjects set average=total/3;
+
+Select 
+----------------
+select *from subjects;
+
+select id,total,average from subjects;
+
+select *from subjects where id=14;
+
+select *from subjects where id=12 or id=13;
+
+select *from subjects where id!=11 and id!=14;
+
+Member Functions
+------------------
+
+select *from subjects where id in(10,14,15);
+
+select *from subjects where id=any(10,14,15);
+
+select *from subjects where id not in(10,12,14,15);
+
+Like Operator
+-----------------
+
+select *from subjects where name='%s;
+
+primary key
+-----------------------
+
+Employee table
+=====================
+create table employee(id number(5) constraint id_pk primary key,name varchar2(30),sal number(9,2));
+
+alter table employee drop constraint id_pk;
+
+insert into employee values(101,'Newton',9900);
+
+insert into employee values(102,'Einstein',8900);
+
+insert into employee values(103,'Srinivasan',12500);
+
+insert into employee values(101,'Srinivasan',12500);
+
+Department table
+=====================
+Foreign key :- create table department(id number(5),name varchar2(30),loc varchar2(30),eid number(5) constraint eid-fk references employee(id));
+
+primary Key :- alter table department add constraint did_pk primary key(id); 
+
+insert into department values(10,'java','hyderabad',101);
+
+insert into department values(11,'pega','hyderabad',102);
+
+insert into department values(12,'angular','pune',103);
+
+delete from employee where id=101;
+
+Check :- create table employee(id number(5) constraint id_pk primary key,name varchar2(30),sal number(9,2) constraint sal_check check sal>15000;
+
+alter table employee add constraint sal_check check sal>15000;
+
+alter table subjects add constraint subid_fk foreign key(subid) references stu(sid);
+
+NOT NULL :- create table employee(id number(5) constraint id_pk primary key,name varchar2(30) NOT NULL,sal number(9,2));
+
+alter table employee add constraint name_notnull NOT NULL(name));
+
+Block
+---------------
+
+declare 
+name varchar2(10);
+begin
+select ename into name from emp where empno=7934;
+dbms_output.put_line('hello mr.' || name);
+end;
+/
+ For output-set server output on
+
+
+declare 
+name varchar2(10);
+esal number(7,2);
+id number(5);
+begin
+select ename,sal,empno into name,esal,id from emp where empno=7534;
+dbms_output.put_line(name || '_' || esal || '_' || id);
+end;
+/
+
+
+declare 
+name varchar2(10);s
+esal number(7,2);
+id number(5);
+begin
+select ename,sal,empno into name,esal,id from emp where empno=7534;
+dbms_output.put_line(name || '_' || esal || '_' || id);
+end;
+/
+
+declare 
+name emp.ename%TYPE;
+esal emp.sal%TYPE;
+id emp.empno%TYPE;
+begin
+select ename,sal,empno into name,esal,id from emp where empno=7534;
+dbms_output.put_line(name || '_' || esal || '_' || id);
+end;
+/
+
+IF THEN
+---------------
+IF condition THEN
+statements;
+END IF;
+
+ex :- declare
+num number(5):=10;
+begin
+if num!=0 then
+   dbms_output.put_line('positive number');
+end if;
+end;
+/
+
+IF THEN ELSE
+---------------------
+IF condition THEN
+  statement 1;
+else 
+statement 2;
+end if;
+
+ex:- declare
+num number(5):=10;
+begin
+if mod(num,2)=0 then
+   dbms_output.put_line('Even number');
+else
+  dbms_output.put_line('Odd number');
+end if;
+end;
+/
+
+IF ELSIF ELSE
+---------------
+IF condition THEN
+  statement 1;
+ELSIF condition then
+  statement 2;
+else 
+  statement 3;
+end if;
+
+ex:-declare
+num number(5):=9;
+begin
+if mod(num,2)=0 then
+   dbms_output.put_line('Even number');
+elsif mod(num,2)=1 then
+   dbms_output.put_line('Odd number');
+else
+  dbms_output.put_line('not a valid number');
+end if;
+end;
+/
+
+NESTED IF
+------------------
+declare
+num number(20):=75;
+begin
+if num>=90 and num<=100 then
+   dbms_output.put_line('Grade A');
+elsif num>=80 and num<90 then
+   dbms_output.put_line('Grade B');
+elsif num>=70 and num<80 then
+   dbms_output.put_line('Grade C');
+elsif num>=60 and num<70 then
+   dbms_output.put_line('Grade D');
+else
+  dbms_output.put_line('not qualified');
+end if;
+end;
+/
+
+SWITCH CASE
+----------------------
+1) declare
+num number(20):=75;
+begin
+case
+ when num>=90 and num<=100 then
+   dbms_output.put_line('Grade A');
+ when num>=80 and num<90 then
+   dbms_output.put_line('Grade B');
+ when num>=70 and num<80 then
+   dbms_output.put_line('Grade C');
+ when num>=60 and num<70 then
+   dbms_output.put_line('Grade D');
+else
+  dbms_output.put_line('not qualified');
+end case; 
+end;
+/
+
+2) declare
+mon_name varchar2(20):= &mon_name;
+begin
+case mon_name
+ when 'Jan' then
+   dbms_output.put_line('31 days');
+ when 'Feb' then
+   dbms_output.put_line('28 days');
+ when 'Mar' then
+   dbms_output.put_line('31 days');
+ when 'Apr' then
+   dbms_output.put_line('30 days');
+ when 'May' then
+   dbms_output.put_line('31 days');
+ when 'Jun' then
+   dbms_output.put_line('30 days');
+ when 'Jul' then
+   dbms_output.put_line('31 days');
+ when 'Aug' then
+   dbms_output.put_line('31 days');
+ when 'Sep' then
+   dbms_output.put_line('30 days');
+ when 'Oct' then
+   dbms_output.put_line('31 days');
+ when 'Nov' then
+   dbms_output.put_line('30 days');
+ when 'Dec' then
+   dbms_output.put_line('31 days');
+else
+   dbms_output.put_line('not a valid month');
+end case; 
+end;
+/
+
+LOOP
+-------------
+LOOP
+statement;
+end loop;
+
+ex:- declare 
+num number(5):=1;
+begin
+loop
+dbms_output.put_line(num);
+num:=num+1;
+exit when num=5;
+end loop;
+end;
+/
+
+WHILE LOOP
+--------------
+WHILE condition LOOP
+ statements;
+END LOOP;
+
+ex:-  declare 
+num number(5):=1;
+begin
+while num<=10 loop 
+dbms_output.put_line(num);
+ num:=num+1;
+end loop;
+end;
+/
+
+FOR LOOP
+-----------
+for index_var in lower.upper loop
+statments;
+end loop;
+
+ex:- begin
+for num in 1..10 loop
+dbms_output.put_line(num);
+end loop;
+end;
+/
+
+reversing
+------------
+1) begin
+for num in reverse 1..10 loop
+dbms_output.put_line(num);
+end loop;
+end;
+/
+
+2) declare
+num number(5):=10;
+begin
+for i in 1..10 loop
+dbms_output.put_line(num);
+num:=num-1;
+end loop;
+end;
+/
+
+PROCEDURE
+==================
+create or replace procedure procedurename is variable datatype:=value;
+begin
+.
+.
+.
+
+end;
+
+Execution
+---------------
+exec procedure name;
+
+ex:-  create or replace procedure print_hello is msg varchar2(30):='hello good morning';
+begin
+dbms_output.put_line(msg);
+end;
+/
+
+Using parameters
+---------------
+i)IN
+ii)OUT
+
+IN
+----------
+create or replace procedure print_name_sal(id in number) is 
+name emp.ename%type;
+esal emp.sal%type;
+begin
+select ename,sal into name,esal from emp where empno=id;
+dbms_output.put_line(name||' '||esal);
+end;
+/
+
+exec:- exec print_name_sal(7534);
+
+USING IN and OUT
+---------------------
+create or replace procedure print_emp(id in number,name out varchar2) is
+begin
+select ename into name from emp where empno=id;
+dbms_output.put_line('Hello Mr.'||name);
+end;
+/
+
+declare
+empname emp.ename%type;
+begin
+print_emp(7534,empname);
+end;
+/
+
+FUNCTIONS
+==============================
+create or replace function print_msg return varchar2 is 
+begin
+return 'hello,good afternoon';
+end;
+/
+
+Execution
+----------------
+declare
+msg varchar2(30);
+begin
+msg:=print_msg;
+dbms_output.put_line(msg);
+end;
+/
+
+Using in and out display the salary using id?
+-----------------------------------------------
+create or replace function salary(id in number,esal out number) return number is
+begin 
+select sal into esal from emp where empno=id;
+return esal;
+end;
+/
+
+declare
+empsal emp.sal%type;
+begin
+empsal:=salary(7934,empsal);
+dbms_output.put_line(empsal);
+end;
+/
+
+Voter
+--------------
+create or replace procedure voter(num in number) is
+begin
+if num>=18 then
+dbms_output.put_line('Allow to Register');
+else
+dbms_output.put_line('try to Register after' ||' ' || (18-num)||' '|| 'years');
+end if;
+end;
+/
+
+EXCEPTIONS
+===============================
+Custom Exceptions
+----------------------
+create or replace procedure age(num in number) is invalid_age_exception EXCEPTION;
+begin
+if num>=18 then
+dbms_output.put_line('Allow to Register');
+elsif num<18 then raise invalid_age_exception;
+end if;
+exception
+when invalid_age_exception then dbms_output.put_line('try to Register after' ||' ' || (18-num)||' '|| 'years Exception');
+end;
+/
+
+Predefined Exception
+-------------------------------------
+create or replace procedure print_emp_sal is esal number(9,2);
+begin 
+select sal into esal from emp where empno=1234;
+dbms_output.put_line(esal);
+end;
+/
+
+Modifying Predefined Exceptions
+------------------------------------
+create or replace procedure print_emp_sal is esal number(5);
+begin 
+select sal into esal from emp where empno=1234;
+dbms_output.put_line(esal);
+exception
+ when no_data_found then
+dbms_output.put_line('no data for' || 1234);
+end;
+/
+
+create or replace procedure add_age is
+begin
+execute immediate 'alter table emp add age number(2)';
+end;
+/
+
+TRIGGERS
+====================================
+create table sal_history(id number(5),name varchar2(10),previous_sal number(9,2),latest_sal number(9,2));
+
+ROW LEVEL
+-------------------------------------
+create or replace trigger sal_trigger before update of sal on emp
+for each row 
+begin 
+insert into sal_history values(:old.empno, :old.ename, :old.sal, :new.sal);
+end;
+/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
